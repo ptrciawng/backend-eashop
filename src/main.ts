@@ -1,4 +1,11 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+
+dotenv.config({
+  path:
+    process.env.NODE_ENV === 'production'
+      ? '.env.production'
+      : '.env.development',
+});
 
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector, HttpAdapterHost } from '@nestjs/core';
@@ -31,7 +38,7 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter(app.get(HttpAdapterHost)));
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3000, '0.0.0.0');
 }
 
 bootstrap();
